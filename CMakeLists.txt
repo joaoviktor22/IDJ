@@ -1,0 +1,10 @@
+cmake_minimum_required(VERSION 3.22)
+project(JogoCLionv2)
+
+set(CMAKE_CXX_STANDARD 11)
+
+include_directories(C:/SDL2-2.0.22/include/SDL2)
+link_directories(C:/SDL2-2.0.22/lib)
+link_libraries(Mingw32 SDL2main SDL2_image SDL2_ttf SDL2_mixer SDL2)
+
+add_executable(JogoCLionv2 main.cpp Game.h Game.cpp State.cpp State.h Sprite.cpp Sprite.h Log.cpp Log.h)
