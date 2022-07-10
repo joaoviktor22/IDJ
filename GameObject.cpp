@@ -38,7 +38,7 @@ void GameObject::AddComponent(Component *cpt) {
 }
 
 void GameObject::RemoveComponent(Component* cpt) {
-    //std::remove_if(components.begin(), components.end(), [&](Component *a) { return *a == *cpt; });
+    components.erase(std::remove(components.begin(), components.end(), *new std::unique_ptr<Component>(cpt)));
     //components.erase(std::remove( components.begin(), components.end(), cpt), components.end() );
     //auto it = components.begin();
     //while(it != components.end()){

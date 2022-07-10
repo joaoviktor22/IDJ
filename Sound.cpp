@@ -19,6 +19,7 @@ Sound::~Sound() {
 }
 
 void Sound::Play(int times) {
+
     channel = Mix_PlayChannel(-1, chunk, times - 1);
 }
 
@@ -45,5 +46,5 @@ void Sound::Render() {
 }
 
 bool Sound::Is(std::string type) {
-    return false;
+    return type == "Sound";
 }

@@ -4,6 +4,7 @@
 
 #include "Face.h"
 #include "Sound.h"
+#include "Sprite.h"
 
 Face::Face(GameObject &associated) : Component(associated) {
     this->hitpoints = 30;
@@ -12,18 +13,23 @@ Face::Face(GameObject &associated) : Component(associated) {
 void Face::Damage(int damage) {
     hitpoints = hitpoints - damage;
     if (hitpoints <= 0) {
-        // Play sound if exist
         Component *SoundComponent = associated.GetComponent("Sound");
         if (SoundComponent) {
             auto *sound = dynamic_cast<Sound *>(SoundComponent);
+            //sound->Play(1);
+            //if(Mix_Playing(sound->channel) != 1){
+            //    associated.RequestDelete();
+            //}
+            Component *SpriteComponent = associated.GetComponent("Sprite");
+            auto *sprite = dynamic_cast<Sprite *>(SpriteComponent);
             sound->Play(1);
+            associated.RemoveComponent(sprite);
         }
-        //associated.RequestDelete();
     }
 }
 
 void Face::Update(float dt) {
-
+    associated.RequestDelete();
 }
 
 void Face::Render() {

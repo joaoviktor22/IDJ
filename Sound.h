@@ -21,9 +21,10 @@ public:
     void Update(float dt) override;
     void Render() override;
     bool Is(std::string type) override;
+
+    int channel{};
 private:
     Mix_Chunk *chunk;
-    int channel{};
 };
 
 

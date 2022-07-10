@@ -85,6 +85,7 @@ void State::Input() {
                     }
                 }
             }
+
         }
         if( event.type == SDL_KEYDOWN ) {
             // Se a tecla for ESC, setar a flag de quit
