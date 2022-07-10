@@ -2,21 +2,22 @@
 // Created by DELL on 17/06/2022.
 //
 #pragma once
+#define INCLUDE_SDL
+#define INCLUDE_SDL_MIXER
 #include <string>
 #include <SDL_mixer.h>
 
-using std::string;
 
-class Music {
+class Music{
 public:
     Music();
-    explicit Music(const string& file);
+    explicit Music(const std::string& file);
 
-    static void Play(int times);
+    void Play(int times);
     static void Stop();
-    static void Open(const string& file);
-    static bool IsOpen();
+    void Open(const std::string& file);
+    bool IsOpen();
 
 private:
-    static Mix_Music* music;
+    Mix_Music* music{};
 };

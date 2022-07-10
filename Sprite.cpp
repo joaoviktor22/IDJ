@@ -6,20 +6,24 @@
 
 #include "Game.h"
 
-Sprite::Sprite() {
+Sprite::Sprite(GameObject &associated) : Component(associated) {
     texture = nullptr;
 }
 
-Sprite::Sprite(const string& file) {
+Sprite::Sprite(GameObject &associated,const string& file) : Component(associated) {
     texture = nullptr;
     Open(file);
+    associated.box.W = width;
+    associated.box.H = height;
+    scale.X = 1;
+    scale.Y = 1;
 }
 
 
 Sprite::~Sprite() {
-    if (texture!=nullptr) {
-        SDL_DestroyTexture(texture);
-    }
+    //if (texture!=nullptr) {
+    //    SDL_DestroyTexture(texture);
+    //}
 }
 
 void Sprite::Open(const string& file) {
@@ -36,7 +40,6 @@ void Sprite::Open(const string& file) {
     }
 
     SDL_QueryTexture(texture, nullptr, nullptr, &width, &height);
-
     SetClip(0, 0, width, height);
 }
 
@@ -69,4 +72,13 @@ int Sprite::GetHeight() const {
 
 bool Sprite::IsOpen() {
     return texture != nullptr;
+}
+
+void Sprite::Render() {}
+
+void Sprite::Update(float dt) {}
+
+
+bool Sprite::Is(std::string type) {
+    return type == "Sprite";
 }

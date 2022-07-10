@@ -8,7 +8,7 @@ Music::Music() {
     music = nullptr;
 }
 
-Music::Music(const string& file) {
+Music::Music(const std::string& file) {
     Open(file);
 }
 
@@ -20,7 +20,7 @@ void Music::Stop() {
     Mix_FadeOutMusic(0);
 }
 
-void Music::Open(const string& file) {
+void Music::Open(const std::string& file) {
     music = Mix_LoadMUS(file.c_str());
 }
 
