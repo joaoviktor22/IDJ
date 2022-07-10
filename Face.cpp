@@ -12,13 +12,13 @@ Face::Face(GameObject &associated) : Component(associated) {
 void Face::Damage(int damage) {
     hitpoints = hitpoints - damage;
     if (hitpoints <= 0) {
-        associated.RequestDelete();
         // Play sound if exist
         Component *SoundComponent = associated.GetComponent("Sound");
         if (SoundComponent) {
             auto *sound = dynamic_cast<Sound *>(SoundComponent);
             sound->Play(1);
         }
+        //associated.RequestDelete();
     }
 }
 

@@ -6,7 +6,7 @@
 #include "State.h"
 
 
-State::State(): bg((GameObject &) "img/ocean.jpg"){
+State::State(){
     quitRequested = false;
     auto gameObject = new GameObject();
 
@@ -37,7 +37,7 @@ void State::Update(float dt) {
 }
 
 void State::Render() {
-    bg.Render(0, 0);
+    //bg.Render(0, 0);
     for (auto & i : objectArray) {
         i->Render();
     }

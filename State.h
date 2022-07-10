@@ -19,7 +19,7 @@ public:
     void Update(float dt);
     void Render();
 private:
-    Sprite bg;
+    //Sprite bg;
     Music music;
     bool quitRequested;
     std::vector<std::unique_ptr<GameObject>> objectArray;

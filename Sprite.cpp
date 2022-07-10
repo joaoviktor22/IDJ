@@ -74,7 +74,9 @@ bool Sprite::IsOpen() {
     return texture != nullptr;
 }
 
-void Sprite::Render() {}
+void Sprite::Render() {
+    Render(static_cast<int>(associated.box.X), static_cast<int>(associated.box.Y));
+}
 
 void Sprite::Update(float dt) {}
 
