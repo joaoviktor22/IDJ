@@ -3,7 +3,7 @@
 //
 
 #include "Sprite.h"
-
+#include "Resources.h"
 #include "Game.h"
 
 Sprite::Sprite(GameObject &associated) : Component(associated) {
@@ -13,10 +13,10 @@ Sprite::Sprite(GameObject &associated) : Component(associated) {
 Sprite::Sprite(GameObject &associated,const string& file) : Component(associated) {
     texture = nullptr;
     Open(file);
-    associated.box.W = width;
-    associated.box.H = height;
-    scale.X = 1;
-    scale.Y = 1;
+    //associated.box.W = width;
+    //associated.box.H = height;
+    //scale.X = 1;
+    //scale.Y = 1;
 }
 
 
@@ -27,19 +27,11 @@ Sprite::~Sprite() {
 }
 
 void Sprite::Open(const string& file) {
-    Game& gameInstance = Game::GetInstance();
-    if (texture != nullptr) {
-        SDL_DestroyTexture(texture);
-    }
-    texture = IMG_LoadTexture(gameInstance.GetRenderer(), file.c_str());
-
-    if (texture == nullptr) {
-        string error = SDL_GetError();
-        Log::LogError(error);
-        exit(0);
-    }
+    texture = Resources::GetImage(file);
 
     SDL_QueryTexture(texture, nullptr, nullptr, &width, &height);
+    associated.box.W = width;
+    associated.box.H = height;
     SetClip(0, 0, width, height);
 }
 

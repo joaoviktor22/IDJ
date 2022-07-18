@@ -4,6 +4,7 @@
 #define INCLUDE_SDL_IMAGE
 #define INCLUDE_SDL_MIXER
 #include "SDL_include.h"
+#include "Resources.h"
 #include "Game.h"
 #include "State.h"
 
@@ -48,13 +49,11 @@ Game & Game::GetInstance() {
 Game::~Game() {
     delete storedState;
 
-    Mix_CloseAudio();
-    Mix_Quit();
-
-    IMG_Quit();
-
     SDL_DestroyRenderer(renderer);
     SDL_DestroyWindow(window);
+    Mix_CloseAudio();
+    Mix_Quit();
+    IMG_Quit();
 
     SDL_Quit();
 }
@@ -76,4 +75,7 @@ void Game::Run() {
 
         SDL_Delay(33);
     }
+    Resources::ClearImages();
+    Resources::ClearMusics();
+    Resources::ClearSounds();
 }

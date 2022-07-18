@@ -4,7 +4,8 @@
 
 #include "Music.h"
 #include "State.h"
-
+#include "TileSet.h"
+#include "TileMap.h"
 
 State::State(){
     quitRequested = false;
@@ -12,11 +13,22 @@ State::State(){
 
     // Adds Sprite
     auto sprite = new Sprite(*gameObject, R"(D:\IDJ\JogoClion\img\ocean.jpg)");
-    sprite->SetClip(0, 0, 1024, 600);
+    //sprite->SetClip(0, 0, 1024, 600);
     gameObject->AddComponent(sprite);
+    objectArray.emplace_back(gameObject);
+
+    auto MapGameObject = new GameObject();
+    MapGameObject->box.X = 0;
+    MapGameObject->box.Y = 0;
+    MapGameObject->box.W = 1024;
+    MapGameObject->box.H = 600;
+
+    auto *set = new TileSet(64, 64, R"(D:\IDJ\JogoClion\img\tileset.png)");
+    MapGameObject->AddComponent(new TileMap(*MapGameObject, R"(D:\IDJ\JogoClion\map\tileMap.txt)", set));
+    objectArray.emplace_back(MapGameObject);
+
     music = Music(R"(D:\IDJ\JogoClion\audio\stageState.ogg)");
     music.Play(-1);
-    objectArray.emplace_back(gameObject);
 }
 
 void State::LoadAssets() {
@@ -108,9 +120,9 @@ void State::AddObject(int mouseX, int mouseY) {
 
     // Adds Sprite
     auto sprite = new Sprite(*gameObject, R"(D:\IDJ\JogoClion\img\penguinface.png)");
+    gameObject->box.X = mouseX - gameObject->box.W/2;
+    gameObject->box.Y = mouseY - gameObject->box.H/2;
     gameObject->AddComponent(sprite);
-    gameObject->box.X = mouseX;
-    gameObject->box.Y = mouseY;
 
     auto sound = new Sound(*gameObject, R"(D:\IDJ\JogoClion\audio\boom.wav)");
     gameObject->AddComponent(sound);
