@@ -17,22 +17,21 @@ using std::string;
 class Game {
 public:
     Game(const string& title, int width, int height);
-
     ~Game();
-
     static Game& GetInstance();
-
     SDL_Renderer* GetRenderer();
-
     State& GetState();
-
     void Run();
+    float GetDeltaTime();
 
 private:
     static Game* Instance;
     SDL_Window* window;
     SDL_Renderer* renderer;
     State* storedState;
+    int frameStart;
+    float dt;
+    void CalculateDeltaTime();
 };
 //#ifndef JOGOCLIONV2_GAME_H
 //#define JOGOCLIONV2_GAME_H

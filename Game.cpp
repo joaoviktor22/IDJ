@@ -5,6 +5,7 @@
 #define INCLUDE_SDL_MIXER
 #include "SDL_include.h"
 #include "Resources.h"
+#include "InputManager.h"
 #include "Game.h"
 #include "State.h"
 
@@ -68,9 +69,10 @@ SDL_Renderer * Game::GetRenderer() {
 
 void Game::Run() {
     while (!(*storedState).QuitRequested()) {
-
+        CalculateDeltaTime();
         storedState->Render();
-        storedState->Update(5.0);
+        InputManager::GetInstance().Update();
+        storedState->Update(dt);
         SDL_RenderPresent(renderer);
 
         SDL_Delay(33);
@@ -78,4 +80,14 @@ void Game::Run() {
     Resources::ClearImages();
     Resources::ClearMusics();
     Resources::ClearSounds();
+}
+
+float Game::GetDeltaTime() {
+    return dt;
+}
+
+void Game::CalculateDeltaTime() {
+    int actualTicks = SDL_GetTicks();
+    dt = (actualTicks - frameStart) / 1000.0;
+    frameStart = actualTicks;
 }

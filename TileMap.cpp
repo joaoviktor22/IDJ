@@ -4,6 +4,7 @@
 
 #include "TileMap.h"
 #include "Game.h"
+#include "Camera.h"
 
 TileMap::TileMap(GameObject &associated, string file, TileSet *tileSet) : Component(associated) {
     Load(file);
@@ -39,7 +40,7 @@ int &TileMap::At(int x, int y, int z) {
 
 void TileMap::Render() {
     for (int z = 0; z < mapDepth; ++z) {
-        RenderLayer(z, (int)associated.box.X, (int)associated.box.Y);
+        RenderLayer(z, (int)Camera::pos.X, (int)Camera::pos.Y);
     }
 }
 
@@ -54,14 +55,18 @@ bool TileMap::Is(std::string type) {
 void TileMap::RenderLayer(int layer, int cameraX, int cameraY) {
     for (int i = 0; i < mapWidth; i++){
         for (int j = 0; j < mapHeight; ++j){
-            int x = i * tileSet->GetTileWidth() - cameraX;
-            int y = j * tileSet->GetTileHeight() - cameraY;
+            //int x = i * tileSet->GetTileWidth() - cameraX;
+            //int y = j * tileSet->GetTileHeight() - cameraY;
 
-            Rect box = associated.box;
+            //Rect box = associated.box;
 
-            if (x > -tileSet->GetTileWidth() && x < box.W && y > -tileSet->GetTileHeight() && y < box.H) {
-                tileSet->RenderTile((unsigned)At(i, j, layer), x, y);
-            }
+            //if (x > -tileSet->GetTileWidth() && x < box.W && y > -tileSet->GetTileHeight() && y < box.H) {
+            //    tileSet->RenderTile((unsigned)At(i, j, layer), x, y);
+            //}
+            auto x = (int)(i * tileSet->GetTileWidth() - cameraX - 0.5 * Camera::pos.X * layer);
+            auto y = (int)(j * tileSet->GetTileHeight() - cameraY - 0.5 * Camera::pos.Y * layer);
+
+            tileSet->RenderTile((unsigned)At(i, j, layer), x, y);
         }
     }
 }

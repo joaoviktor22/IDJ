@@ -5,6 +5,7 @@
 #include "Sprite.h"
 #include "Resources.h"
 #include "Game.h"
+#include "Camera.h"
 
 Sprite::Sprite(GameObject &associated) : Component(associated) {
     texture = nullptr;
@@ -67,7 +68,7 @@ bool Sprite::IsOpen() {
 }
 
 void Sprite::Render() {
-    Render(static_cast<int>(associated.box.X), static_cast<int>(associated.box.Y));
+    Render(static_cast<int>(associated.box.X - (int)Camera::pos.X), static_cast<int>(associated.box.Y - (int)Camera::pos.Y));
 }
 
 void Sprite::Update(float dt) {}

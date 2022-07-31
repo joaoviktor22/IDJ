@@ -6,12 +6,16 @@
 #include "State.h"
 #include "TileSet.h"
 #include "TileMap.h"
+#include "Camera.h"
+#include "InputManager.h"
+#include "CameraFollower.h"
 
 State::State(){
     quitRequested = false;
     auto gameObject = new GameObject();
 
     // Adds Sprite
+    gameObject->AddComponent(new CameraFollower(*gameObject));
     auto sprite = new Sprite(*gameObject, R"(D:\IDJ\JogoClion\img\ocean.jpg)");
     //sprite->SetClip(0, 0, 1024, 600);
     gameObject->AddComponent(sprite);
@@ -40,7 +44,25 @@ bool State::QuitRequested() const {
 
 void State::Update(float dt) {
     //quitRequested = SDL_QuitRequested();
-    Input();
+    SDL_Event event;
+    Camera::Update(dt);
+    auto& manager = InputManager::GetInstance();
+    quitRequested = manager.QuitRequested() || manager.KeyPress(SDLK_ESCAPE);
+
+    if (manager.KeyPress(SDLK_SPACE)) {
+        Vec2 cameraPosition = Camera::pos;
+        float x = (float)manager.GetMouseX() + cameraPosition.X;
+        float y = (float)manager.GetMouseY() + cameraPosition.Y;
+        Vec2 objPos = Vec2( 200, 0 );
+        objPos.Rotate( -PI + PI*(rand() % 1001)/500.0 );
+        objPos = objPos + Vec2( x, y );
+        AddObject((int)objPos.X, (int)objPos.Y);
+    }
+
+    for (auto &it : objectArray) {
+        it->Update(dt);
+    }
+
     for (unsigned int i = 0; i < objectArray.size(); i++) {
         if (objectArray[i] -> IsDead()) {
             objectArray.erase(objectArray.begin() + i);

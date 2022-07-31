@@ -5,6 +5,8 @@
 #include "Face.h"
 #include "Sound.h"
 #include "Sprite.h"
+#include "Camera.h"
+#include "InputManager.h"
 
 Face::Face(GameObject &associated) : Component(associated) {
     this->hitpoints = 30;
@@ -29,7 +31,12 @@ void Face::Damage(int damage) {
 }
 
 void Face::Update(float dt) {
-
+    auto& inputManager = InputManager::GetInstance();
+    float x = inputManager.GetMouseX() + Camera::pos.X;
+    float y = inputManager.GetMouseY() + Camera::pos.Y;
+    if (inputManager.MousePress(LEFT_MOUSE_BUTTON) && associated.box.IsInside(x,y)) {
+        Damage(rand() % 10 + 10);
+    }
 }
 
 void Face::Render() {
