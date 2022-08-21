@@ -9,9 +9,11 @@
 #include "Camera.h"
 #include "InputManager.h"
 #include "CameraFollower.h"
+#include "Alien.h"
 
 State::State(){
     quitRequested = false;
+    started = false;
     auto gameObject = new GameObject();
 
     // Adds Sprite
@@ -31,6 +33,16 @@ State::State(){
     MapGameObject->AddComponent(new TileMap(*MapGameObject, R"(D:\IDJ\JogoClion\map\tileMap.txt)", set));
     objectArray.emplace_back(MapGameObject);
 
+    auto *alien = new GameObject();
+    // Adicionando o comportamento de Alien
+    Alien *behaviour = new Alien(*alien, 4);
+    alien->AddComponent(behaviour);
+
+    alien->box.X = 512;
+    alien->box.Y = 300;
+
+    objectArray.emplace_back(alien);
+
     music = Music(R"(D:\IDJ\JogoClion\audio\stageState.ogg)");
     music.Play(-1);
 }
@@ -49,15 +61,15 @@ void State::Update(float dt) {
     auto& manager = InputManager::GetInstance();
     quitRequested = manager.QuitRequested() || manager.KeyPress(SDLK_ESCAPE);
 
-    if (manager.KeyPress(SDLK_SPACE)) {
-        Vec2 cameraPosition = Camera::pos;
-        float x = (float)manager.GetMouseX() + cameraPosition.X;
-        float y = (float)manager.GetMouseY() + cameraPosition.Y;
-        Vec2 objPos = Vec2( 200, 0 );
-        objPos.Rotate( -PI + PI*(rand() % 1001)/500.0 );
-        objPos = objPos + Vec2( x, y );
-        AddObject((int)objPos.X, (int)objPos.Y);
-    }
+    //if (manager.KeyPress(SDLK_SPACE)) {
+        //Vec2 cameraPosition = Camera::pos;
+        //float x = (float)manager.GetMouseX() + cameraPosition.X;
+        //float y = (float)manager.GetMouseY() + cameraPosition.Y;
+        //Vec2 objPos = Vec2( 200, 0 );
+        //objPos.Rotate( -PI + PI*(rand() % 1001)/500.0 );
+        //objPos = objPos + Vec2( x, y );
+        //AddObject((int)objPos.X, (int)objPos.Y);
+    //}
 
     for (auto &it : objectArray) {
         it->Update(dt);
@@ -82,75 +94,83 @@ State::~State() {
 }
 
 void State::Input() {
-    SDL_Event event;
-    int mouseX, mouseY;
+    //SDL_Event event;
+    //int mouseX, mouseY;
 
     // Obtenha as coordenadas do mouse
-    SDL_GetMouseState(&mouseX, &mouseY);
+    //SDL_GetMouseState(&mouseX, &mouseY);
 
     // SDL_PollEvent retorna 1 se encontrar eventos, zero caso contrário
-    while (SDL_PollEvent(&event)) {
+   // while (SDL_PollEvent(&event)) {
 
         // Se o evento for quit, setar a flag para terminação
-        if(event.type == SDL_QUIT) {
-            quitRequested = true;
-        }
+        //if(event.type == SDL_QUIT) {
+        //    quitRequested = true;
+       // }
 
         // Se o evento for clique...
-        if(event.type == SDL_MOUSEBUTTONDOWN) {
+        //if(event.type == SDL_MOUSEBUTTONDOWN) {
 
             // Percorrer de trás pra frente pra sempre clicar no objeto mais de cima
-            for(int i = objectArray.size() - 1; i >= 0; --i) {
+            //for(int i = objectArray.size() - 1; i >= 0; --i) {
                 // Obtem o ponteiro e casta pra Face.
-                auto* go = (GameObject*) objectArray[i].get();
+                //auto* go = (GameObject*) objectArray[i].get();
                 // Nota: Desencapsular o ponteiro é algo que devemos evitar ao máximo.
                 // O propósito do unique_ptr é manter apenas uma cópia daquele ponteiro,
                 // ao usar get(), violamos esse princípio e estamos menos seguros.
                 // Esse código, assim como a classe Face, é provisório. Futuramente, para
                 // chamar funções de GameObjects, use objectArray[i]->função() direto.
 
-                if(go->box.IsInside( {(float)mouseX, (float)mouseY} ) ) {
-                    Face* face = (Face*)go->GetComponent( "Face" );
-                    if ( nullptr != face ) {
-                        // Aplica dano
-                        face->Damage(std::rand() % 10 + 10);
-                        // Sai do loop (só queremos acertar um)
-                        break;
-                    }
-                }
-            }
+                //if(go->box.IsInside( {(float)mouseX, (float)mouseY} ) ) {
+                  //  Face* face = (Face*)go->GetComponent( "Face" );
+                  //  if ( nullptr != face ) {
+                  //      // Aplica dano
+                  //      face->Damage(std::rand() % 10 + 10);
+                 //       // Sai do loop (só queremos acertar um)
+                //        break;
+              //      }
+            //    }
+           // }
 
-        }
-        if( event.type == SDL_KEYDOWN ) {
+        //}
+        //if( event.type == SDL_KEYDOWN ) {
             // Se a tecla for ESC, setar a flag de quit
-            if( event.key.keysym.sym == SDLK_ESCAPE ) {
-                quitRequested = true;
-            }
+            //if( event.key.keysym.sym == SDLK_ESCAPE ) {
+              //  quitRequested = true;
+            //}
                 // Se não, crie um objeto
-            else {
-                Vec2 objPos = Vec2( 200, 0 );
-                objPos.Rotate( -PI + PI*(rand() % 1001)/500.0 );
-                objPos = objPos + Vec2( mouseX, mouseY );
-                AddObject((int)objPos.X, (int)objPos.Y);
-            }
-        }
-    }
+            //else {
+               // Vec2 objPos = Vec2( 200, 0 );
+               // objPos.Rotate( -PI + PI*(rand() % 1001)/500.0 );
+               // objPos = objPos + Vec2( mouseX, mouseY );
+               // AddObject((int)objPos.X, (int)objPos.Y);
+           // }
+        //}
+    //}
 }
 
-void State::AddObject(int mouseX, int mouseY) {
-    auto gameObject = new GameObject();
+void State::Start() {
+    LoadAssets();
+    for(auto &i: objectArray){
+        i->Start();
+    }
+    started = true;
+}
 
-    // Adds Sprite
-    auto sprite = new Sprite(*gameObject, R"(D:\IDJ\JogoClion\img\penguinface.png)");
-    gameObject->box.X = mouseX - gameObject->box.W/2;
-    gameObject->box.Y = mouseY - gameObject->box.H/2;
-    gameObject->AddComponent(sprite);
+std::weak_ptr<GameObject> State::AddObject(GameObject* go) {
+    std::shared_ptr<GameObject> gameObject(go);
+    objectArray.push_back(gameObject);
+    if(started){
+        gameObject->Start();
+    }
+    return std::weak_ptr<GameObject>(gameObject);
+}
 
-    auto sound = new Sound(*gameObject, R"(D:\IDJ\JogoClion\audio\boom.wav)");
-    gameObject->AddComponent(sound);
-
-    auto face = new Face(*gameObject);
-    gameObject->AddComponent(face);
-
-    objectArray.emplace_back(gameObject);
+std::weak_ptr<GameObject> State::GetObjectPtr(GameObject *go) {
+    for (auto &i : objectArray) {
+        if(i.get() == go){
+            return std::weak_ptr<GameObject>(i);
+        }
+    }
+    return std::weak_ptr<GameObject>();
 }

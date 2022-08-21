@@ -20,8 +20,11 @@ public:
     void RemoveComponent(Component* cpt);
     Component* GetComponent(const std::string& type);
     Rect box;
+    void Start();
+    double angleDeg;
 private:
     //std::vector<Component*> components;
+    bool started;
     std::vector<std::unique_ptr<Component>> components;
     bool isDead;
 };

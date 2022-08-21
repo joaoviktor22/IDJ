@@ -13,14 +13,17 @@ public:
     State();
     ~State();
     void Input();
-    void AddObject(int mouseX,int mouseY);
+    std::weak_ptr<GameObject> AddObject(GameObject* go);
     bool QuitRequested() const;
     void LoadAssets();
     void Update(float dt);
     void Render();
+    void Start();
+    std::weak_ptr<GameObject> GetObjectPtr(GameObject* go);
 private:
     //Sprite bg;
+    bool started;
     Music music;
     bool quitRequested;
-    std::vector<std::unique_ptr<GameObject>> objectArray;
+    std::vector<std::shared_ptr<GameObject>> objectArray;
 };

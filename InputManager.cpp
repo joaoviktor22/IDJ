@@ -3,6 +3,7 @@
 //
 
 #include "InputManager.h"
+#include "Camera.h"
 #include <SDL.h>
 #include <cstring>
 
@@ -89,4 +90,8 @@ bool InputManager::QuitRequested() {
 InputManager &InputManager::GetInstance() {
     static InputManager instance;
     return instance;
+}
+
+Vec2 InputManager::GetMouse() {
+    return {mouseX + Camera::pos.X, mouseY + Camera::pos.Y};
 }

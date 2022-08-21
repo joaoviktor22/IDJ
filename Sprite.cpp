@@ -9,6 +9,7 @@
 
 Sprite::Sprite(GameObject &associated) : Component(associated) {
     texture = nullptr;
+    scale = Vec2(1,1);
 }
 
 Sprite::Sprite(GameObject &associated,const string& file) : Component(associated) {
@@ -16,8 +17,8 @@ Sprite::Sprite(GameObject &associated,const string& file) : Component(associated
     Open(file);
     //associated.box.W = width;
     //associated.box.H = height;
-    //scale.X = 1;
-    //scale.Y = 1;
+    scale.X = 1;
+    scale.Y = 1;
 }
 
 
@@ -56,11 +57,11 @@ void Sprite::Render(int x, int y) {
 }
 
 int Sprite::GetWidth() const {
-    return width;
+    return (int)(width*scale.X);
 }
 
 int Sprite::GetHeight() const {
-    return height;
+    return (int)(height*scale.Y);
 }
 
 bool Sprite::IsOpen() {
@@ -76,4 +77,23 @@ void Sprite::Update(float dt) {}
 
 bool Sprite::Is(std::string type) {
     return type == "Sprite";
+}
+
+void Sprite::SetScale(float scaleX, float scaleY) {
+    auto &box = associated.box;
+    if(scaleX != 0){
+        scale.X = scaleX;
+        box.W = width * scaleX;
+        box.X = box.GetCenter().X - box.W/2;
+    }
+
+    if(scaleY != 0){
+        scale.Y = scaleY;
+        box.H = height * scaleY;
+        box.Y = box.GetCenter().Y - box.H/2;
+    }
+}
+
+Vec2 Sprite::GetScale() {
+    return scale;
 }

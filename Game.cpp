@@ -68,6 +68,7 @@ SDL_Renderer * Game::GetRenderer() {
 }
 
 void Game::Run() {
+    storedState->Start();
     while (!(*storedState).QuitRequested()) {
         CalculateDeltaTime();
         storedState->Render();

@@ -7,4 +7,8 @@
 Component::Component(GameObject &associated) : associated(associated) {
 }
 
+void Component::Start() {
+
+}
+
 Component::~Component() = default;

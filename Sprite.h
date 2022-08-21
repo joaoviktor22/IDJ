@@ -24,6 +24,8 @@ public:
     bool IsOpen();
     void Update(float dt) override;
     bool Is(std::string type) override;
+    void SetScale(float scaleX, float scaleY);
+    Vec2 GetScale();
 
 private:
     SDL_Texture* texture;

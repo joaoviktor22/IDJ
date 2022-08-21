@@ -8,7 +8,7 @@ class Component;
 class Component{
 public:
     explicit Component(GameObject &associated);
-
+    virtual void Start();
     virtual ~Component();
     virtual void Update(float dt) = 0;
     virtual void Render() = 0;
