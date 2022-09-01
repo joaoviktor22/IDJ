@@ -6,12 +6,14 @@
 #include "Sprite.h"
 #include "Bullet.h"
 #include "Game.h"
+#include "Collider.h"
 
 Minion::Minion(GameObject &associated, std::weak_ptr<GameObject> alienCenter, float arcOffsetDeg) : Component(associated), alienCenter(*alienCenter.lock()), arc(arcOffsetDeg) {
-    Sprite *sprite = new Sprite(associated, R"(D:\IDJ\JogoClion\img\minion.png)");
-    float random = float_rand(1, 1.5f);
+    auto *sprite = new Sprite(associated, R"(D:\IDJ\JogoClion\img\minion.png)");
+    float random = float_rand(1, 1.5);
     sprite->SetScale(random, random);
     associated.AddComponent(sprite);
+    associated.AddComponent(new Collider(associated));
 }
 
 void Minion::Update(float dt) {
@@ -41,7 +43,7 @@ void Minion::Shoot(Vec2 target) {
     bulletGo->box.Y = associated.box.GetCenter().Y - bulletGo->box.H/2;
     float angle = (target - associated.box.GetCenter()).GetXAxisAngle();
     bulletGo->angleDeg = angle * 180 / M_PI;
-    bulletGo->AddComponent(new Bullet(*bulletGo, angle, 800, 22, 2000, R"(D:\IDJ\JogoClion\img\minionbullet1.png)"));
+    bulletGo->AddComponent(new Bullet(*bulletGo, angle, 300, 22, 1000, R"(D:\IDJ\JogoClion\img\minionbullet2.png)", 3, 0.01, true));
 
     Game::GetInstance().GetState().AddObject(bulletGo);
 }

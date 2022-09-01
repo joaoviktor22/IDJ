@@ -1,7 +1,7 @@
 //
 // Created by DELL on 04/07/2022.
 //
-
+#pragma once
 #ifndef JOGOCLIONV2_FACE_H
 #define JOGOCLIONV2_FACE_H
 

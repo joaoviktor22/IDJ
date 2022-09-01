@@ -5,13 +5,14 @@
 #include <string>
 #include <SDL_image.h>
 #include "Component.h"
+#include "Timer.h"
 
 using std::string;
 
 class Sprite : public Component{
 public:
     explicit Sprite(GameObject &associated);
-    Sprite(GameObject &associated,const string& file);
+    Sprite(GameObject &associated,const string& file,int frameCount = 1, float frameTime = 1, float secondsToSelfDestruct = 0);
 
     ~Sprite() override;
 
@@ -26,11 +27,19 @@ public:
     bool Is(std::string type) override;
     void SetScale(float scaleX, float scaleY);
     Vec2 GetScale();
-
+    void SetFrame(int frame);
+    void SetFrameCount(int frameCount);
+    void SetFrameTime(float frameTime);
 private:
     SDL_Texture* texture;
     int width{};
     int height{};
     SDL_Rect clipRect{};
     Vec2 scale;
+    int frameCount;
+    int currentFrame;
+    float timeElapsed;
+    float frameTime;
+    Timer selfDestructCount;
+    float secondsToSelfDestruct;
 };

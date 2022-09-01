@@ -18,8 +18,8 @@ public:
     int GetDepth();
 private:
     std::vector<int> tileMatrix;
-    TileSet* tileSet;
-    int mapWidth;
-    int mapHeight;
-    int mapDepth;
+    TileSet* tileSet{};
+    int mapWidth{};
+    int mapHeight{};
+    int mapDepth{};
 };

@@ -30,8 +30,8 @@ public:
 private:
     InputManager();
 
-    bool mouseState[6];
-    int mouseUpdate[6];
+    bool mouseState[6]{};
+    int mouseUpdate[6]{};
     bool quitRequested;
     int updateCounter;
     int mouseX;

@@ -25,6 +25,6 @@ public:
     float GetDistance(const Vec2& otherPoint);
     float GetDistanceVectorAngle(const Vec2& destinyPoint);
     float GetXAxisAngle() const;
+    float GetXAxisAngle(const Vec2 other) const;
     void Rotate(float angulo);
-
 };

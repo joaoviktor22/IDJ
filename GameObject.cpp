@@ -4,6 +4,7 @@
 
 #include "GameObject.h"
 #include <algorithm>
+#include <iostream>
 
 GameObject::GameObject() {
     started = false;
@@ -16,14 +17,14 @@ GameObject::~GameObject() {
 }
 
 void GameObject::Update(float dt) {
-    for (auto &cpt: components) {
-        cpt->Update(dt);
+    for (int i = 0; i < components.size(); i++) {
+        components[i]->Update(dt);
     }
 }
 
 void GameObject::Render() {
-    for (auto &cpt: components) {
-        cpt->Render();
+    for (int i = 0; i < components.size(); i++) {
+        components[i]->Render();
     }
 }
 
@@ -56,18 +57,23 @@ void GameObject::RemoveComponent(Component* cpt) {
 }
 
 Component *GameObject::GetComponent(const std::string& type) {
-    Component *temp = nullptr;
-    for (auto &cpt: components) {
-        if (cpt->Is(type)) {
-            temp = cpt.get();
+    for(int i = 0; i < components.size(); i++){
+        if(components[i]->Is(type)){
+            return components[i].get();
         }
     }
-    return temp;
+    return nullptr;
 }
 
 void GameObject::Start() {
-    for (auto &component : components) {
-        component->Start();
+    for (int i = 0; i < components.size(); i++) {
+        components[i]->Start();
     }
     started = true;
+}
+
+void GameObject::NotifyCollision(GameObject &other) {
+    for(auto & component : components){
+        component->NotifyCollision(other);
+    }
 }

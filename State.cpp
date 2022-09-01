@@ -10,6 +10,9 @@
 #include "InputManager.h"
 #include "CameraFollower.h"
 #include "Alien.h"
+#include "PenguinBody.h"
+#include "Collider.h"
+#include "Collision.h"
 
 State::State(){
     quitRequested = false;
@@ -33,9 +36,15 @@ State::State(){
     MapGameObject->AddComponent(new TileMap(*MapGameObject, R"(D:\IDJ\JogoClion\map\tileMap.txt)", set));
     objectArray.emplace_back(MapGameObject);
 
+    auto penguinBodyGO(new GameObject());
+    penguinBodyGO->box.X = 704;
+    penguinBodyGO->box.Y = 640;
+    penguinBodyGO->AddComponent(new PenguinBody(*penguinBodyGO));
+    Camera::Follow(penguinBodyGO);
+    objectArray.emplace_back(penguinBodyGO);
+
     auto *alien = new GameObject();
-    // Adicionando o comportamento de Alien
-    Alien *behaviour = new Alien(*alien, 4);
+    Alien *behaviour = new Alien(*alien, 5);
     alien->AddComponent(behaviour);
 
     alien->box.X = 512;
@@ -70,14 +79,35 @@ void State::Update(float dt) {
         //objPos = objPos + Vec2( x, y );
         //AddObject((int)objPos.X, (int)objPos.Y);
     //}
-
-    for (auto &it : objectArray) {
-        it->Update(dt);
+    for (int i = 0; i < objectArray.size(); i++) {
+        objectArray[i]->Update(dt);
     }
 
-    for (unsigned int i = 0; i < objectArray.size(); i++) {
+    for (int i = objectArray.size() - 1 ; i >= 0; i--) {
         if (objectArray[i] -> IsDead()) {
             objectArray.erase(objectArray.begin() + i);
+        }
+    }
+
+    for (int i = 0; i < objectArray.size(); i++) {
+        for(int j = i+1; j < objectArray.size(); j++){
+            auto &objA = objectArray[i];
+            auto &objB = objectArray[j];
+
+            Collider *colliderA = (Collider*) objA->GetComponent("Collider");
+            Collider *colliderB = (Collider*) objB->GetComponent("Collider");
+            if(colliderA && colliderB){
+                auto boxA = colliderA->box;
+                auto boxB = colliderB->box;
+
+                auto angleOfA = (float)(objA->angleDeg);
+                auto angleOfB = (float)(objB->angleDeg);
+
+                if (Collision::IsColliding(boxA, boxB, angleOfA, angleOfB)) {
+                    objA->NotifyCollision(*objB);
+                    objB->NotifyCollision(*objA);
+                }
+            }
         }
     }
 }
@@ -151,8 +181,8 @@ void State::Input() {
 
 void State::Start() {
     LoadAssets();
-    for(auto &i: objectArray){
-        i->Start();
+    for (int i = 0; i < objectArray.size(); i++) {
+        objectArray[i]->Start();
     }
     started = true;
 }

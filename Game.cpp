@@ -9,7 +9,7 @@
 #include "Game.h"
 #include "State.h"
 
-Game::Game(const string& title, int width, int height) {
+Game::Game(const string& title, int width, int height) : dt(0), frameStart(0)  {
     if (Instance != nullptr) {
         exit(0);
     }
@@ -71,9 +71,9 @@ void Game::Run() {
     storedState->Start();
     while (!(*storedState).QuitRequested()) {
         CalculateDeltaTime();
-        storedState->Render();
         InputManager::GetInstance().Update();
         storedState->Update(dt);
+        storedState->Render();
         SDL_RenderPresent(renderer);
 
         SDL_Delay(33);
@@ -89,6 +89,6 @@ float Game::GetDeltaTime() {
 
 void Game::CalculateDeltaTime() {
     int actualTicks = SDL_GetTicks();
-    dt = (actualTicks - frameStart) / 1000.0;
+    dt = (float)(actualTicks - frameStart) / 1000.0f;
     frameStart = actualTicks;
 }

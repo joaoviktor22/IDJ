@@ -79,3 +79,8 @@ void Vec2::Rotate(float angulo) {
     X = previousX * std::cos(angulo) - Y * std::sin(angulo);
     Y = Y * std::cos(angulo) + previousX * std::sin(angulo);
 }
+
+float Vec2::GetXAxisAngle(const Vec2 other) const {
+    Vec2 diff = *this - other;
+    return diff.GetXAxisAngle();
+}

@@ -1,11 +1,15 @@
 //
 // Created by DELL on 15/08/2022.
 //
-
+#pragma once
 #ifndef JOGOCLIONV2_ALIEN_H
 #define JOGOCLIONV2_ALIEN_H
 #include "Component.h"
+#include "Timer.h"
 #include <queue>
+#define ALIEN_SPEED 300
+#define ALIEN_ROTATION_SPEED -2
+#define ALIEN_REST_COOLDOWN 2
 
 class Alien : public Component {
 public:
@@ -15,19 +19,17 @@ public:
     void Update(float dt) override;
     void Render() override;
     bool Is(std::string type) override;
+    void NotifyCollision(GameObject &other) override;
+    static int alienCount;
 private:
-    class Action{
-    public:
-        enum ActionType{MOVE, SHOOT};
-        Action(ActionType type, float x, float y);
-        ActionType type;
-        Vec2 pos;
-    };
     Vec2 speed;
     int hp;
-    std::queue<Action> taskQueue;
     std::vector<std::weak_ptr<GameObject>> minionArray;
     int NearestMinion(const Vec2 &target) const;
+    enum AlienState{MOVING, RESTING};
+    AlienState state = RESTING;
+    Timer restTimer;
+    Vec2 destination;
 };
 
 

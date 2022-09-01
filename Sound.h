@@ -5,6 +5,7 @@
 #ifndef JOGOCLIONV2_SOUND_H
 #define JOGOCLIONV2_SOUND_H
 
+#pragma once
 #include <SDL_mixer.h>
 #include "Component.h"
 

@@ -1,7 +1,7 @@
 //
 // Created by DELL on 15/08/2022.
 //
-
+#pragma once
 #ifndef JOGOCLIONV2_MINION_H
 #define JOGOCLIONV2_MINION_H
 #include "GameObject.h"

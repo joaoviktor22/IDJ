@@ -19,6 +19,7 @@ public:
     void AddComponent(Component* cpt);
     void RemoveComponent(Component* cpt);
     Component* GetComponent(const std::string& type);
+    void NotifyCollision (GameObject& other);
     Rect box;
     void Start();
     double angleDeg;
