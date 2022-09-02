@@ -5,7 +5,8 @@
 #pragma once
 #include "Component.h"
 #include "Timer.h"
-#define PENGUIN_SHOOT_COOLDOWN 0.5
+
+#define CANNON_COOLDOWN 1
 
 class PenguinCannon :public Component {
 public:

@@ -11,9 +11,6 @@
 #include "Collider.h"
 #include "Camera.h"
 
-#define CANNON_DISTANCE 50
-#define CANNON_COOLDOWN 1
-
 PenguinCannon::PenguinCannon(GameObject &associated, std::weak_ptr<GameObject> penguinBody) : Component(associated) , pbody(move(penguinBody)), angle(0) {
     associated.AddComponent(new Sprite(associated, R"(D:\IDJ\JogoClion\img\cubngun.png)"));
     associated.AddComponent(new Collider(associated));

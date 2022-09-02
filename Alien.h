@@ -9,7 +9,7 @@
 #include <queue>
 #define ALIEN_SPEED 300
 #define ALIEN_ROTATION_SPEED -2
-#define ALIEN_REST_COOLDOWN 2
+#define ALIEN_REST_COOLDOWN 1.5
 
 class Alien : public Component {
 public:

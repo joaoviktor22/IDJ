@@ -11,10 +11,6 @@
 #include "Collider.h"
 #include "Bullet.h"
 
-#define PENGUIN_ACCELERATION 6
-#define PENGUIN_SPEED_LIMIT 400
-#define PENGUIN_ANGULAR_VELOCITY M_PI / 12
-
 PenguinBody *PenguinBody::player = nullptr;
 
 PenguinBody::PenguinBody(GameObject &associated) : Component(associated) , speed(0, 0), linearSpeed(0), angle(0), hp(150) {

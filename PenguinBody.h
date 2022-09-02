@@ -4,6 +4,10 @@
 #pragma once
 #include "Component.h"
 
+#define PENGUIN_ACCELERATION 6
+#define PENGUIN_SPEED_LIMIT 350
+#define PENGUIN_ANGULAR_VELOCITY M_PI / 12
+
 class PenguinBody : public Component {
 public:
     explicit PenguinBody(GameObject &associated);
