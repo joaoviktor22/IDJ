@@ -2,6 +2,7 @@
 // Created by DELL on 04/07/2022.
 //
 
+#include <iostream>
 #include "Rect.h"
 Rect::Rect() {
     X = 0;
@@ -36,7 +37,6 @@ Vec2 Rect::GetCenter() const {
 
     toReturn.X = X + W / 2;
     toReturn.Y = Y + H / 2;
-
     return toReturn;
 }
 

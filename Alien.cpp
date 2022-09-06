@@ -11,10 +11,11 @@
 #include "Collider.h"
 #include "Bullet.h"
 #include "PenguinBody.h"
+#include "Sound.h"
 
 int Alien::alienCount = 0;
 
-Alien::Alien(GameObject &associated, int nMinions) : Component(associated), speed({0, 0}), hp(40) {
+Alien::Alien(GameObject &associated, int nMinions, float timeOffset) : Component(associated), speed({0, 0}), hp(50) , timeOffset(timeOffset){
     associated.AddComponent(new Sprite(associated, R"(D:\IDJ\JogoClion\img\alien.png)"));
     associated.AddComponent(new Collider(associated));
     minionArray.resize((unsigned long)(nMinions));
@@ -65,7 +66,7 @@ void Alien::Update(float dt) {
         if(player) {
             if (state == RESTING) {
                 restTimer.Update(dt);
-                if (restTimer.Get() > ALIEN_REST_COOLDOWN) {
+                if (restTimer.Get() > ALIEN_REST_COOLDOWN + timeOffset) {
                     destination = player->Posicao();
                     Vec2 vel = Vec2(ALIEN_SPEED, 0);
                     vel.Rotate((destination - associated.box.GetCenter()).GetXAxisAngle());
@@ -81,12 +82,10 @@ void Alien::Update(float dt) {
 
                 if (calculado.Magnitude() < real.Magnitude()) {
                     associated.box = associated.box + calculado;
-
                     auto target = player->Posicao();
                     const std::shared_ptr<GameObject> &ptr = minionArray[NearestMinion(target)].lock();
                     auto minion = (Minion *) (ptr->GetComponent("Minion"));
                     minion->Shoot(target);
-
                     state = RESTING;
                     restTimer.Restart();
                 } else {

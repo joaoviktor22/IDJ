@@ -10,10 +10,11 @@
 #include "InputManager.h"
 #include "Collider.h"
 #include "Bullet.h"
+#include "Sound.h"
 
 PenguinBody *PenguinBody::player = nullptr;
 
-PenguinBody::PenguinBody(GameObject &associated) : Component(associated) , speed(0, 0), linearSpeed(0), angle(0), hp(150) {
+PenguinBody::PenguinBody(GameObject &associated) : Component(associated) , speed(0, 0), linearSpeed(0), angle(0), hp(100) {
     associated.AddComponent(new Sprite(associated, R"(D:\IDJ\JogoClion\img\penguin.png)"));
     associated.AddComponent(new Collider(associated));
     player = this;

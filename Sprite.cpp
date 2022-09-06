@@ -16,6 +16,7 @@ Sprite::Sprite(GameObject &associated) : Component(associated) {
     timeElapsed = 0;
     secondsToSelfDestruct = 0;
     selfDestructCount = *new Timer;
+
 }
 
 Sprite::Sprite(GameObject &associated,const string& file, int frameCount, float frameTime, float secondsToSelfDestruct) : Component(associated) {
@@ -42,7 +43,7 @@ Sprite::~Sprite() {
 void Sprite::Open(const string& file) {
     texture = Resources::GetImage(file);
 
-    SDL_QueryTexture(texture, nullptr, nullptr, &width, &height);
+    SDL_QueryTexture(texture.get(), nullptr, nullptr, &width, &height);
     associated.box.W = width;
     associated.box.H = height;
     SetClip(0, 0, width / frameCount, height);
@@ -66,7 +67,7 @@ void Sprite::Render(int x, int y) {
     if(associated.GetComponent("Bullet")){
         //associated.angleDeg = associated.angleDeg * (180 / M_PI);
     }
-    SDL_RenderCopyEx(renderer, texture, &clipRect, &destinyRectangle, associated.angleDeg, nullptr , SDL_FLIP_NONE);
+    SDL_RenderCopyEx(renderer, texture.get(), &clipRect, &destinyRectangle, associated.angleDeg, nullptr , SDL_FLIP_NONE);
     if(associated.GetComponent("Bullet")){
         //associated.angleDeg = associated.angleDeg / (180 / M_PI);
     }

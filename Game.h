@@ -6,29 +6,30 @@
 #include <iostream>
 #include <string>
 #include <SDL_image.h>
-#include "State.h"
+#include <stack>
+#include "StageState.h"
 #include "Log.h"
-
-using std::string;
 
 #define DEFAULT_GAME_WIDTH 1024;
 #define DEFAULT_GAME_HEIGHT 600;
 
 class Game {
 public:
-    Game(const string& title, int width, int height);
+    Game(const std::string& title, int width, int height);
     ~Game();
     static Game& GetInstance();
     SDL_Renderer* GetRenderer();
     State& GetState();
+    void Push(State *state);
     void Run();
-    float GetDeltaTime();
+    float GetDeltaTime() const;
 
 private:
     static Game* Instance;
     SDL_Window* window;
     SDL_Renderer* renderer;
     State* storedState;
+    std::stack<std::unique_ptr<State>>  stateStack;
     int frameStart;
     float dt;
     void CalculateDeltaTime();

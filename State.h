@@ -1,29 +1,33 @@
 //
-// Created by DELL on 17/06/2022.
+// Created by DELL on 02/09/2022.
 //
 #pragma once
-#include "Sprite.h"
-#include "Music.h"
-#include "Face.h"
-#include "Vec2.h"
-#include "Sound.h"
+
+#include "GameObject.h"
 
 class State {
 public:
     State();
-    ~State();
-    void Input();
-    std::weak_ptr<GameObject> AddObject(GameObject* go);
-    bool QuitRequested() const;
-    void LoadAssets();
-    void Update(float dt);
-    void Render();
-    void Start();
-    std::weak_ptr<GameObject> GetObjectPtr(GameObject* go);
-private:
-    //Sprite bg;
-    bool started;
-    Music music;
+    virtual ~State();
+
+    virtual void LoadAssets() = 0;
+    virtual void Update(float dt) = 0;
+    virtual void Render() = 0;
+    virtual void Start() = 0;
+    virtual void Pause() = 0;
+    virtual void Resume() = 0;
+    virtual std::weak_ptr<GameObject> AddObject(GameObject *object);
+    virtual std::weak_ptr<GameObject> GetObjectPtr(GameObject *object);
+    bool PopRequested();
+    bool QuitRequested();
+protected:
+    void StartArray();
+    virtual void UpdateArray(float dt);
+    virtual void RenderArray();
+    bool popRequested;
     bool quitRequested;
+    bool started;
     std::vector<std::shared_ptr<GameObject>> objectArray;
 };
+
+

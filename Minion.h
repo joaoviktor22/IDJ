@@ -16,7 +16,7 @@ public:
 private:
     GameObject& alienCenter;
     float arc;
-    float float_rand(float min, float max);
+    static float float_rand(float min, float max);
 };
 
 

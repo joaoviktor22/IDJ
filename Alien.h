@@ -7,13 +7,13 @@
 #include "Component.h"
 #include "Timer.h"
 #include <queue>
-#define ALIEN_SPEED 300
+#define ALIEN_SPEED 350
 #define ALIEN_ROTATION_SPEED -2
-#define ALIEN_REST_COOLDOWN 1.5
+#define ALIEN_REST_COOLDOWN 1.2
 
 class Alien : public Component {
 public:
-    Alien(GameObject &associated, int nMinions);
+    Alien(GameObject &associated, int nMinions, float timeOffset);
     ~Alien();
     void Start() override;
     void Update(float dt) override;
@@ -29,6 +29,7 @@ private:
     enum AlienState{MOVING, RESTING};
     AlienState state = RESTING;
     Timer restTimer;
+    float timeOffset;
     Vec2 destination;
 };
 
